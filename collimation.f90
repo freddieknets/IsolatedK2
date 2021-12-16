@@ -314,7 +314,7 @@ subroutine coll_init
     write(lerr,"(a)") "COLL> ERROR All emittances should be normalized. "//&
       "first put emittance for distribtion generation, then for collimator position etc. units in [mm*mrad]."
     write(lerr,"(a)") "COLL> ERROR EXAMPLE: 2.5 2.5 3.5 3.5"
-    call prror
+    !call prror
   end if
 
   call coll_echoSettings
@@ -1193,12 +1193,12 @@ subroutine coll_postInput()
 
   if(c_enom <= zero) then
     write(lerr,"(a)") "COLL> ERROR Beam energy must bea larger than zero"
-    call prror
+    !call prror
   end if
 
   if(cdb_fileName == " ") then
     write(lerr,"(a)") "COLL> ERROR No collimator database file specified"
-    call prror
+    !call prror
   end if
 
 end subroutine coll_postInput
@@ -1521,7 +1521,7 @@ subroutine coll_doCollimator(stracki)
     if(nSlices < 0) then
       write(lerr,"(a)")    "COLL> ERROR Invalid entry in jaw fit database for collimator '"//trim(cdb_cName(icoll))//"'"
       write(lerr,"(a,i0)") "COLL>       Value returned for number of slices is ",nSlices
-      call prror
+      !call prror
     end if
   else
     nSlices = 1
@@ -1596,7 +1596,7 @@ subroutine coll_doCollimator(stracki)
       end if
     else
       write(lerr,"(a,f13.6)") "COLL> ERROR Non-zero length collimator '"//trim(cdb_cName(icoll))//"' with length = ",stracki
-      call prror
+      !call prror
     end if
   end do
 
@@ -1611,7 +1611,7 @@ subroutine coll_doCollimator(stracki)
     ! For each slice, the corresponding offset and angle are to be used.
     if(cdb_isCrystal(icoll)) then
       write(lerr,"(a)") "COLL> ERROR A crystal collimator cannot be sliced"
-      call prror
+      !call prror
     end if
     do iSlice=1,nSlices
       jawAperture = c_aperture
@@ -1757,7 +1757,7 @@ subroutine coll_doCollimator(stracki)
       else
         write(lerr,"(a)")          "COLL> ERROR Particle cannot be both absorbed and not absorbed"
         write(lerr,"(a,2(1x,i0))") "COLL>      ",part_abs_pos (j),part_abs_turn(j)
-        call prror
+        !call prror
       end if
 
     end if
@@ -2205,7 +2205,7 @@ subroutine coll_matchedHalo(c_tilt,c_offset,c_aperture,c_length)
   else
     write(lerr,"(a)") "COLL> ERROR Attempting to use a halo not purely in the horizontal "//&
       "or vertical plane with pencil_dist=3 - abort."
-    call prror
+    !call prror
   end if
 
   ! Calculate offset from tilt of positive and negative jaws, at start and end
@@ -2556,7 +2556,7 @@ subroutine coll_writeSelectedCollimator
         write(lerr,"(a,i0)") "COLL> ERROR Found invalid impact parameter ",part_impact(j)
         write(outlun,*)      "ERR>  Found invalid impact parameter ",part_impact(j)
         flush(outlun)
-        call prror
+        !call prror
       end if
 
       n_impact = n_impact + 1

@@ -167,7 +167,7 @@ subroutine cry_startElement(icoll, ie, emitX, emitY, o_tilt, o_length)
   mat = cdb_cMaterialID(icoll)
   if(validMat(mat) .eqv. .false.) then
     write(lerr,"(a)") "COLL> ERROR Crystal collimation not supported for material '"//trim(colmats(mat))//"'"
-    call prror
+    !call prror
   end if
 
   if(modulo(cdb_cRotation(icoll),pi) < c1m9) then
@@ -176,7 +176,7 @@ subroutine cry_startElement(icoll, ie, emitX, emitY, o_tilt, o_length)
     cry_tilt0 = -(sqrt(emitY/tbetay(ie))*talphay(ie))*cdb_cNSig(icoll)
   else
     write(lerr,"(a)") "COLL> ERROR Crystal collimator has to be horizontal or vertical"
-    call prror
+    !call prror
   end if
 
   cry_tilt = cdb_cryTilt(icoll) + cry_tilt0

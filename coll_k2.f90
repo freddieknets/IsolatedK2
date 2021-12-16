@@ -361,7 +361,7 @@ subroutine k2coll_collimate(icoll, iturn, ie, c_length, c_rotation, c_aperture, 
         s = (-one*x)/xp
         if(s <= zero) then
           write(lerr,"(a)") "COLLK2> ERROR S <= zero. This should not happen!"
-          call prror
+          !call prror
         end if
         if(s < length) then
           zlm       = length - s
@@ -687,7 +687,7 @@ subroutine k2coll_scatin(plab)
   call f_open(unit=csUnit,file=cs_fileName,formatted=.true.,mode="w",err=csErr,status="replace")
   if(csErr) then
     write(lerr,"(a)") "COLL> ERROR Could not open the CS debugging file '"//trim(cs_fileName)//"'"
-    call prror
+    !call prror
   end if
 
   write(csUnit,'(a,e24.16)') 'plab:  ', plab

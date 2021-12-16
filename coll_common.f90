@@ -427,7 +427,7 @@ subroutine collmat_init
 
   if(iMat > nrmat) then
     write(lerr,"(a)") "COLL> ERROR Variable imat > nrmat in collmat_init. Please increase nrmat."
-    call prror
+    !call prror
   end if
 
   ! The following two must always be the last two materials
@@ -458,7 +458,7 @@ subroutine collmat_init
 
   if(iMat > nmat) then
     write(lerr,"(a)") "COLL> ERROR Variable imat > nmat in collmat_init. Please increase nmat."
-    call prror
+    !call prror
   end if
 
 end subroutine collmat_init

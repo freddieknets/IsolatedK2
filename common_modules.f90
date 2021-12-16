@@ -55,7 +55,7 @@ module parpro
   integer, parameter :: nbb_initial   = 100
 
   ! Dividing line for output
-  character(len=mDivLen), parameter :: str_divLine = repeat("-",mDivLen)
+ ! character(len=mDivLen), parameter :: str_divLine = repeat("-",mDivLen)
 
 end module parpro
 

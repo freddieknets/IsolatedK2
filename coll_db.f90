@@ -183,7 +183,7 @@ subroutine cdb_readCollDB
   call f_open(unit=dbUnit,file=cdb_fileName,formatted=.true.,mode="r",err=dbErr,status="old")
   if(dbErr) then
     write(lerr,"(a)") "COLLDB> ERROR Could not open the collimator database file '"//trim(cdb_fileName)//"'"
-    call prror
+    !call prror
   end if
 
 ! ============================================================================ !
@@ -230,7 +230,7 @@ subroutine cdb_readCollDB
 
   if(cdb_nColl < 1) then
     write(lerr,"(a)") "COLLDB> Collimator database file read, but no collimators found."
-    call prror
+    !call prror
   end if
 
   ! Set collimator stage from family stage, if we have any, otherwise default to unknown
@@ -318,7 +318,7 @@ subroutine cdb_readDB_newFormat
   call f_open(unit=dbUnit,file=cdb_fileName,formatted=.true.,mode="r",status="old",err=fErr)
   if(fErr) then
     write(lerr,"(a)") "COLLDB> ERROR Cannot read from '"//trim(cdb_fileName)//"'"
-    call prror
+    !call prror
   end if
 
 10 continue
@@ -327,14 +327,14 @@ subroutine cdb_readDB_newFormat
   read(dbUnit,"(a)",end=20,iostat=ioStat) inLine
   if(ioStat /= 0) then
     write(lerr,"(a)") "COLLDB> ERROR Cannot read from '"//trim(cdb_fileName)//"'"
-    call prror
+    !call prror
   end if
   if(inLine(1:1) == "#") goto 10
 
   call chr_split(inLine, lnSplit, nSplit, cErr)
   if(cErr) then
     write(lerr,"(a,i0)") "COLLDB> ERROR Failed to parse database line ",iLine
-    call prror
+    !call prror
   end if
   if(nSplit == 0) goto 10 ! Skip empty lines
 
@@ -348,7 +348,7 @@ subroutine cdb_readDB_newFormat
     if(nSplit /= 3 .and. nSplit /= 4) then
       write(lerr,"(a,i0,a)") "COLLDB> ERROR Collimator family description on line ",iLine," must be 3 or 4 values."
       write(lerr,"(a)")      "COLLDB>       NSIG_FAM famName sigmaSetting [stage]"
-      call prror
+      !call prror
     end if
     call chr_cast(lnSplit(3), nSig, cErr)
     call cdb_addFamily(trim(lnSplit(2)), nSig, famID, fExists)
@@ -373,7 +373,7 @@ subroutine cdb_readDB_newFormat
         cdb_famStage(famID) = cdb_stgUnknown
       case default
         write(lerr,"(a,i0)") "COLLDB> ERROR Unknown collimator stage '"//trim(lnSplit(4))//"' on line ",iLine
-        call prror
+        !call prror
       end select
     else
       cdb_famStage(famID) = cdb_stgUnknown
@@ -384,7 +384,7 @@ subroutine cdb_readDB_newFormat
   ! If not a family definition, it should be a collimator
   if(nSplit < 6) then
     write(lerr,"(a,i0,a)") "COLLDB> ERROR Collimator description on line ",iLine," has less than 6 values."
-    call prror
+    !call prror
   end if
 
   iColl = iColl + 1
@@ -401,7 +401,7 @@ subroutine cdb_readDB_newFormat
     cdb_cMaterialID(iColl) = matID
   else
     write(lerr,"(a)") "COLLDB> ERROR Material '"//trim(lnSplit(3))//"' not supported. Check your collimator database."
-    call prror
+    !call prror
   end if
 
   call chr_cast(lnSplit(4),cdb_cLength(iColl),  cErr)
@@ -423,7 +423,7 @@ subroutine cdb_readDB_newFormat
     if(famID == -1) then
       write(lerr,"(a,i0,a)") "COLLDB> ERROR Collimator opening '"//trim(adjustl(lnSplit(2)))//"' on line ",iLine,&
         " is not in family database"
-      call prror
+      !call prror
     else
       cdb_cFamily(iColl)   = famID
       cdb_cNSig(iColl)     = cdb_famNSig(famID)
@@ -561,7 +561,7 @@ subroutine cdb_readDB_oldFormat
       cdb_cMaterialID(j) = matID
     else
       write(lerr,"(a)") "COLLDB> ERROR Material '"//trim(cdb_cMaterial(j))//"' not supported. Check your CollDB."
-      call prror
+      !call prror
     end if
 
   end do
@@ -572,7 +572,7 @@ subroutine cdb_readDB_oldFormat
 
 100 continue
   write(lerr,"(2(a,i0))") "COLLDB> ERROR Cannot read DB file line ",iLine,", iostat = ",ioStat
-  call prror
+  !call prror
 
 end subroutine cdb_readDB_oldFormat
 
@@ -748,7 +748,7 @@ subroutine cdb_readDBSettings
   call f_open(unit=dbUnit,file=cdb_fileName,formatted=.true.,mode="r",status="old",err=fErr)
   if(fErr) then
     write(lerr,"(a)") "COLLDB> ERROR Cannot read from '"//trim(cdb_fileName)//"'"
-    call prror
+    !call prror
   end if
 
 10 continue
@@ -759,7 +759,7 @@ subroutine cdb_readDBSettings
 
   if(ioStat /= 0) then
     write(lerr,"(a)") "COLLDB> ERROR Cannot read from '"//trim(cdb_fileName)//"'"
-    call prror
+    !call prror
   end if
   if(inLine(1:1) == "#") goto 10
 
@@ -872,7 +872,7 @@ subroutine cdb_readDBSettings
         if(cdb_cFamily(i) == iFam) then
           if(cdb_cSliced(i) /= 0) then
             write(lerr,"(a)") "COLLDB> ERROR Collimator '"//trim(cdb_cName(i))//"' has already been sliced"
-            call prror
+            !call prror
           end if
           cdb_cJawFit(:,i) = fitID
           call jaw_computeFit(cdb_cName(i), fitID, iParam(1), rParam(1:2), bParam(1:2), cdb_cLength(i), &
@@ -883,7 +883,7 @@ subroutine cdb_readDBSettings
     else
       if(cdb_cSliced(iColl) /= 0) then
         write(lerr,"(a)") "COLLDB> ERROR Collimator '"//trim(cdb_cName(iColl))//"' has already been sliced"
-        call prror
+        !call prror
       end if
       cdb_cJawFit(:,iColl) = fitID
       call jaw_computeFit(cdb_cName(iColl), fitID, iParam(1), rParam(1:2), bParam(1:2), cdb_cLength(iColl), &
@@ -970,7 +970,7 @@ subroutine cdb_readDBSettings
 
 30 continue
   write(lerr,"(a,i0)") "COLLDB> ERROR Collimator DB '"//trim(cdb_fileName)//"' on line ",iLine
-  call prror
+  !call prror
 
 end subroutine cdb_readDBSettings
 
@@ -1263,7 +1263,7 @@ subroutine cdb_setMasterJawFit(nSlices, sMin, sMax, rc1, rc2, jawFit, fitScale)
   call jaw_addJawFit("FIT_2", jawFit(2,:), fitID(2), fErr)
   if(fErr) then
     write(lerr,"(a)") "COLLDB> ERROR While setting up jaw fit parameters"
-    call prror
+    !call prror
   end if
 
   do i=1,iu
